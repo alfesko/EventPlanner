@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Календарь мероприятий</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Календарь мероприятий</h1>
+
+    <form method="POST" action="/add">
+        <input type="text" name="title" placeholder="Название" required>
+        <input type="date" name="date" required>
+        <textarea name="description" placeholder="Описание"></textarea>
+        <button type="submit">Добавить</button>
+    </form>
+
+    <form method="GET" action="/search">
+        <input type="text" name="title" placeholder="Фильтр по названию">
+        <input type="text" name="description" placeholder="Фильтр по описанию">
+        <input type="date" name="date" placeholder="Фильтр по дате">
+        <button type="submit">Фильтровать</button>
+    </form>
+
+    <form method="GET" action="/">
+        <button type="submit" name="sort" value="asc">Сортировать по ближайшей дате</button>
+        <button type="submit" name="sort" value="desc">Сортировать по самой старой дате</button>
+    </form>
+
+    <ul>
+        {% for event in events %}
+        <li>
+            <strong>{{ event.title }}</strong> - {{ event.date.strftime('%Y-%m-%d') }}
+            <p>{{ event.description }}</p>
+            <a href="/edit/{{ event.id }}">Редактировать</a>
+            <a href="/delete/{{ event.id }}">Удалить</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
